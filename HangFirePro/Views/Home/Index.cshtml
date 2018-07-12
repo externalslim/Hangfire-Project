@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Hangfire</h1>
+    <p class="lead"></p>
+
+    <p><a onclick="fireAndForget()" class="btn btn-primary btn-lg">fire-and-forget</a>Bir kez çalışır</p>
+    <p><a onclick="after5min()" class="btn btn-primary btn-lg">5 dk sonra çalışacak Job ayarla</a>Belirlenen süre sonunda bir kez çalışır.</p>
+    <p><a onclick="schedule()" class="btn btn-primary btn-lg">Her cuma saat 16:30'da çalışacak job ayarla</a>Schedule çalışır</p>
+    <p><a onclick="scheduleDaily()" class="btn btn-primary btn-lg">Hergün saat 08:30'da çalışacak job ayarla</a>Schedule çalışır</p>
+</div>
+
+
+
+
+<script>
+    function fireAndForget() {
+        var ajax = ajaxRequest("/Home/FireAndForget/", "POST");
+
+        $.when(ajax).done(function (result) {
+            if (result == "true") {
+                toastr.success("Job Başarıyla Oluşturuldu");
+            } else {
+                toastr.error("Başarısız!");
+            }
+        });
+    }
+
+    function after5min() {
+        var ajax = ajaxRequest("/Home/After5Min/", "POST");
+
+        $.when(ajax).done(function (result) {
+            if (result == "true") {
+                toastr.success("Job Başarıyla Oluşturuldu");
+            } else {
+                toastr.error("Başarısız!");
+            }
+        });
+    }
+
+    function schedule() {
+        var ajax = ajaxRequest("/Home/Schedule/", "POST");
+
+        $.when(ajax).done(function (result) {
+            toastr.success("Job Başarıyla Oluşturuldu");
+        });
+    }
+
+    function scheduleDaily() {
+        var ajax = ajaxRequest("/Home/ScheduleDaily/", "POST");
+        $.when(ajax).done(function (result) {
+            toastr.success("Job Başarıyla Oluşturuldu");
+        });
+    }
+
+    function ajaxRequest(url, type, data) {
+        var ajax = $.ajax({
+            type: type,
+            url: url,
+            data: data,
+            success: function (result) {
+                return result;
+            },
+            error: function (error) {
+                return error;
+            }
+        }).done(function () {
+
+        });
+
+        return ajax;
+    }
+</script>
